@@ -1,7 +1,12 @@
+import Home from './home/Home';
 import './App.css';
 
 function App() {
-  return <div className='App'>Fresh start</div>;
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 }
 
 export default App;

@@ -1,0 +1,11 @@
+.main_container {
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  width: 80%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #1E1E1E; */
+  /* box-shadow: 6px 7px 10px 0px rgba(72, 72, 72, 0.6); */
+}
