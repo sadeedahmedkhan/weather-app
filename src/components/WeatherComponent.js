@@ -11,7 +11,7 @@ const DAYS = [
   'Saturday',
 ];
 
-const WeatherComponent = (props) => {
+const WeatherComponent = memo((props) => {
   const { date, temperature, windSpeed, description } = props;
 
   return (
@@ -24,6 +24,6 @@ const WeatherComponent = (props) => {
       <p>Wind (Km/h): {windSpeed}</p>
     </section>
   );
-};
+});
 
 export default WeatherComponent;

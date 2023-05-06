@@ -23,14 +23,19 @@ const Home = () => {
         .get(
           `https://geocoding-api.open-meteo.com/v1/search?name=${search}&count=1&language=en&format=json`
         )
-        .then((response) => response.data.results[0]);
-      await axios
-        .get(
-          `https://api.open-meteo.com/v1/forecast?latitude=${request.latitude}&longitude=${request.longitude}&forecast_days=6&daily=temperature_2m_max,weathercode,windspeed_10m_max&timezone=${request.timezone}`
+        .then((response) =>
+          response.data.results ? response.data.results[0] : null
         )
-        .then((response) => {
-          setWeatherResults(response.data);
-        });
+        .catch((error) => console.log(error));
+      if (request == null) return;
+      const weatherRequest = await axios.get(
+        `https://api.open-meteo.com/v1/forecast?latitude=${request.latitude}&longitude=${request.longitude}&forecast_days=6&daily=temperature_2m_max,weathercode,windspeed_10m_max&timezone=${request.timezone}`
+      );
+      if (!weatherRequest.data.error) {
+        setWeatherResults(weatherRequest.data);
+      } else {
+        console.log('error catched', weatherRequest.data.reason);
+      }
     }
   };
 
