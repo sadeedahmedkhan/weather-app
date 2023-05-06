@@ -22,3 +22,23 @@
   gap: 2rem;
   padding-top: 3rem;
 }
+
+@media (min-width: 768px) {
+  .weather_section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding-top: 3rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .weather_section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    padding-top: 3rem;
+  }
+}
