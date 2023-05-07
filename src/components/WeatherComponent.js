@@ -21,7 +21,7 @@ const WeatherComponent = memo((props) => {
       <img
         className={styles.image}
         src={require(`../assets/${image}`)}
-        alt='weather description image'
+        alt='weather description'
       />
       <p>{description}</p>
       <p>
