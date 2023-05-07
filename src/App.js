@@ -1,8 +1,14 @@
 import Home from './home/Home';
+
 import './App.css';
+import GlobalErrorBoundary from './error_boundaries/GlobalErrorBoundary';
 
 function App() {
-  return <Home />;
+  return (
+    <GlobalErrorBoundary>
+      <Home />
+    </GlobalErrorBoundary>
+  );
 }
 
 export default App;
