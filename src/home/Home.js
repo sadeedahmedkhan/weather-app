@@ -4,6 +4,7 @@ import Header from '../header/Header';
 import WeatherComponent from './../components/WeatherComponent';
 import styles from './Home.module.css';
 import { CODES } from '../constants/WeatherCodes';
+import { IMAGES } from '../constants/Images';
 
 const Home = () => {
   const [search, setSearch] = useState('');
@@ -61,6 +62,7 @@ const Home = () => {
           temperature: weatherResults.daily.temperature_2m_max[i],
           windSpeed: weatherResults.daily.windspeed_10m_max[i],
           description: CODES.get(weatherResults.daily.weathercode[i]),
+          image: IMAGES.get(weatherResults.daily.weathercode[i]),
         });
       }
     }
@@ -73,7 +75,7 @@ const Home = () => {
       <div className={styles.search_container}>
         <input
           autoFocus
-          onFocus={handleClearState}
+          // onFocus={handleClearState}
           onClick={handleClearState}
           className={styles.search_input}
           value={search}
@@ -82,6 +84,9 @@ const Home = () => {
           onKeyDown={handlePressEnter}
         />
       </div>
+      {weatherResults && error === '' ? (
+        <h2 style={{ paddingLeft: '2rem' }}>Next five days..</h2>
+      ) : null}
       <section className={styles.weather_section}>
         {weatherResults && error === ''
           ? formatWeatherData.map((data) => (
@@ -91,6 +96,7 @@ const Home = () => {
                 temperature={data.temperature}
                 windSpeed={data.windSpeed}
                 description={data.description}
+                image={data.image}
               />
             ))
           : error}

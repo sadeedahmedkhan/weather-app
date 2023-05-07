@@ -1,7 +1,7 @@
+import React from 'react';
 import Home from './home/Home';
-
-import './App.css';
 import GlobalErrorBoundary from './error_boundaries/GlobalErrorBoundary';
+import './App.css';
 
 function App() {
   return (

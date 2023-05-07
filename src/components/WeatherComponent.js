@@ -12,16 +12,20 @@ const DAYS = [
 ];
 
 const WeatherComponent = memo((props) => {
-  const { date, temperature, windSpeed, description } = props;
+  const { date, temperature, windSpeed, description, image } = props;
 
   return (
     <section className={styles.main_container}>
       <h3>{DAYS[new Date(date).getDay()]}</h3>
       <p>{date}</p>
-      <div className={styles.image}>image</div>
+      <img className={styles.image} src={require(`../assets/${image}`)} />
       <p>{description}</p>
-      <p>Temperature (C): {temperature}</p>
-      <p>Wind (Km/h): {windSpeed}</p>
+      <p>
+        <strong>Temperature (C):</strong> {temperature} °C
+      </p>
+      <p>
+        <strong>Wind (Km/h):</strong> {windSpeed}
+      </p>
     </section>
   );
 });
