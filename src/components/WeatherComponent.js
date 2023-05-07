@@ -18,7 +18,11 @@ const WeatherComponent = memo((props) => {
     <section className={styles.main_container}>
       <h3>{DAYS[new Date(date).getDay()]}</h3>
       <p>{date}</p>
-      <img className={styles.image} src={require(`../assets/${image}`)} />
+      <img
+        className={styles.image}
+        src={require(`../assets/${image}`)}
+        alt='weather description image'
+      />
       <p>{description}</p>
       <p>
         <strong>Temperature (C):</strong> {temperature} °C
