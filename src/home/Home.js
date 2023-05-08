@@ -6,6 +6,8 @@ import styles from './Home.module.css';
 import { CODES } from '../constants/WeatherCodes';
 import { IMAGES } from '../constants/Images';
 
+const searchCache = new Map(); //map to store cache for api responses
+
 const Home = () => {
   const [search, setSearch] = useState('');
   const [weatherResults, setWeatherResults] = useState(null);
@@ -14,6 +16,8 @@ const Home = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
+
+    //reset values for new search
     if (error) setError('');
     if (weatherResults) setWeatherResults(null);
   };
@@ -31,10 +35,23 @@ const Home = () => {
       e.target.value !== ' '
     ) {
       setLoading(true);
+
+      //check if response already exists in cache
+      if (searchCache.has(search)) {
+        console.log(
+          `not making api request again for ${search}, using cache instead!`
+        );
+        setWeatherResults(searchCache.get(search));
+        setLoading(false);
+        return;
+      }
+
+      //send api request for new location
       const request = await axios.get(
         `https://geocoding-api.open-meteo.com/v1/search?name=${search}&count=1&language=en&format=json`
       );
 
+      //check for errors in response from api
       if (!request.data?.results) {
         console.log('error catched after location api request: ', request);
         setError('⚠ Invalid Location, Please try again!');
@@ -43,11 +60,18 @@ const Home = () => {
       }
 
       const { latitude, longitude, timezone } = request.data.results[0];
+
+      //send api request for weather
       const weatherRequest = await axios.get(
         `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&forecast_days=6&daily=temperature_2m_max,weathercode,windspeed_10m_max&timezone=${timezone}`
       );
+
+      //check for errors in response from api
       if (!weatherRequest.data.error) {
         setWeatherResults(weatherRequest.data);
+
+        //cache response
+        searchCache.set(search, weatherRequest.data);
       } else {
         setError('⚠ Something went wrong, please refresh or try again!');
         console.log(
@@ -59,6 +83,7 @@ const Home = () => {
     }
   };
 
+  //memoize the return value of function to avoid unneccessary operations
   const formatWeatherData = useMemo(() => {
     let weatherData = [];
     if (weatherResults !== null) {
@@ -81,7 +106,6 @@ const Home = () => {
       <div className={styles.search_container}>
         <input
           autoFocus
-          // onFocus={handleClearState}
           onClick={handleClearState}
           className={styles.search_input}
           value={search}

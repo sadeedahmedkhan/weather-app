@@ -13,6 +13,7 @@ class GlobalErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    //log errors for debugging services
     console.log('Error: ', error);
     console.log('Error Information: ', errorInfo);
   }
