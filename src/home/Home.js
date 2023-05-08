@@ -10,9 +10,12 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const [weatherResults, setWeatherResults] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
+    if (error) setError('');
+    if (weatherResults) setWeatherResults(null);
   };
 
   const handleClearState = () => {
@@ -27,6 +30,7 @@ const Home = () => {
       e.target.value.length > 1 &&
       e.target.value !== ' '
     ) {
+      setLoading(true);
       const request = await axios.get(
         `https://geocoding-api.open-meteo.com/v1/search?name=${search}&count=1&language=en&format=json`
       );
@@ -34,6 +38,7 @@ const Home = () => {
       if (!request.data?.results) {
         console.log('error catched after location api request: ', request);
         setError('⚠ Invalid Location, Please try again!');
+        setLoading(false);
         return;
       }
 
@@ -50,6 +55,7 @@ const Home = () => {
           weatherRequest.data.reason
         );
       }
+      setLoading(false);
     }
   };
 
@@ -70,7 +76,7 @@ const Home = () => {
   }, [weatherResults]);
 
   return (
-    <div>
+    <>
       <Header />
       <div className={styles.search_container}>
         <input
@@ -85,9 +91,9 @@ const Home = () => {
         />
       </div>
       {weatherResults && error === '' ? (
-        <h2 style={{ paddingLeft: '2rem' }}>Next five days..</h2>
+        <h2 style={{ paddingLeft: '2rem' }}>Next five days in {search}..</h2>
       ) : null}
-      <section className={styles.weather_section}>
+      <main className={styles.weather_section}>
         {weatherResults && error === ''
           ? formatWeatherData.map((data) => (
               <WeatherComponent
@@ -99,9 +105,11 @@ const Home = () => {
                 image={data.image}
               />
             ))
+          : loading
+          ? 'Loading results...'
           : error}
-      </section>
-    </div>
+      </main>
+    </>
   );
 };
 

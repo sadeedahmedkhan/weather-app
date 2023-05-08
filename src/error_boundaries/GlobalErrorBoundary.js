@@ -20,10 +20,10 @@ class GlobalErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError)
       return (
-        <div>
+        <>
           <h4>Something unlucky happened :(</h4>
           <h1>Refreshing the page might fix me!</h1>
-        </div>
+        </>
       );
 
     return this.props.children;
